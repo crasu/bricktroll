@@ -1,6 +1,6 @@
-# bricktroll
+# Bricktroll
 
-Firmware for real hardware remote for Lego Control+ using an esp32.
+Firmware for a "real hardware remote" for Lego Control+ using an esp32.
 
 # Installation
 
