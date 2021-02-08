@@ -137,18 +137,16 @@ void calibrate() {
 
 void control()
 {
-    static position prev_pos;
+    Position prev_pos;
 
     if (legoHub.isConnected()) {
-        position pos = read_joystick();
+        Position pos = read_joystick();
 
-        if (prev_pos.x != pos.x)
+        if (prev_pos != pos) {
             legoHub.setBasicMotorSpeed(portD, pos.x);
-        if (prev_pos.y != pos.y)            
             legoHub.setAbsoluteMotorPosition(portB, 50, -pos.y);
-
-        if ((prev_pos.y != pos.y) || prev_pos.x != pos.x))
             show_full_screen_message(String(pos.x) + " " + String(pos.y));
+        }
 
         prev_pos.x = pos.x;
         prev_pos.y = pos.y;

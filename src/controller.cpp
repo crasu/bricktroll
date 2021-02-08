@@ -16,7 +16,7 @@ void controller_init()
     analogReadResolution(11);
 }
 
-int16_t calibrate(int16_t in) {
+int16_t normalize(int16_t in) {
     int16_t out = in - 1024;
     out = -out*100/1024;
     
@@ -27,13 +27,20 @@ int16_t calibrate(int16_t in) {
     return out;
 }
 
-position read_joystick()
+Position read_joystick()
 {
-    position pos;
+    Position pos;
 
-    pos.x = calibrate(analogRead(HW_CONTROLLER_GPIO_UP_DOWN));
-    pos.y = calibrate(analogRead(HW_CONTROLLER_GPIO_LEFT_RIGHT));
+    pos.x = normalize(analogRead(HW_CONTROLLER_GPIO_UP_DOWN));
+    pos.y = normalize(analogRead(HW_CONTROLLER_GPIO_LEFT_RIGHT));
 
     return pos;
 }
 
+bool Position::operator==(Position& o) {
+   return x == o.x && y == o.y;
+}
+
+bool Position::operator!=(Position& o) {
+   return !(*this == o);
+}

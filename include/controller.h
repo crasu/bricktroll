@@ -1,10 +1,12 @@
 #pragma once
 #include <Arduino.h>
 
-struct position {
+struct Position {
     int16_t x;
     int16_t y;
+    bool operator==(Position& o);
+    bool operator!=(Position& o);
 };
 
 void controller_init();
-position read_joystick();
+Position read_joystick();
