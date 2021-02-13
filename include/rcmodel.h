@@ -8,7 +8,6 @@
 class RcModel {
     private:
         RcModel();
-        static int steering_pos;
 
     protected:
         RcModel(Lpf2Hub& hub): hub(hub) {};
@@ -21,12 +20,7 @@ class RcModel {
         virtual void connect();
         virtual void control(Position pos);
         virtual void calibrate();
-        static void setSteeringPos(int steering_pos) {
-            RcModel::steering_pos = steering_pos;
-        }
-        int getSteeringPos() {
-            return RcModel::steering_pos;
-        }
+
 };
 
 class RallyCar: public RcModel {

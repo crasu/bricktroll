@@ -3,6 +3,16 @@
 byte portB = (byte)ControlPlusHubPort::B;
 byte portD = (byte)ControlPlusHubPort::D;
 
+static int steering_pos;
+
+void setSteeringPos(int sp) {
+    steering_pos = sp;
+}
+
+int getSteeringPos() {
+    return steering_pos;
+}
+
 void tachoMotorCallback(void *hub, byte portNumber, DeviceType deviceType, uint8_t *pData)
 {
   Lpf2Hub *myHub = (Lpf2Hub *)hub;
@@ -14,7 +24,7 @@ void tachoMotorCallback(void *hub, byte portNumber, DeviceType deviceType, uint8
     int rotation = myHub->parseTachoMotor(pData);
     Serial.print("Rotation: ");
     Serial.print(rotation, DEC);
-    RcModel::setSteeringPos(rotation); 
+    setSteeringPos(rotation); 
   }
 }
 
@@ -27,7 +37,7 @@ void RcModel::initalizeCallback() {
     }
 }
 
-void RcModel::connect() {
+void RallyCar::connect() {
     if (!hub.isConnected() && !hub.isConnecting()) {
         hub.init(); 
     }
