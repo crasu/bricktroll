@@ -37,14 +37,28 @@ void setup()
     model = new RallyCar(legoHub);
 }
 
+void auto_shutdown()
+{
+    static int counter = 0;
+    if (legoHub.isConnected()) {
+        counter = 0;
+    } else {
+        if (counter > 60) {
+            show_full_screen_message("Shutting down");
+            delay(500);
+            delay(20);
+        }
+        counter++;
+    }
+}
+
 void loop()
 {
     model->connect();
     model->calibrate();
-    Position pos =read_joystick();
+    Position pos = read_joystick();
     model->control(pos);
+    auto_shutdown();
     delay(20);
-    //delay(1000);
-    //watch->shutdown();
 }
 

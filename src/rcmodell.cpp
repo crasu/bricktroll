@@ -102,5 +102,4 @@ void RallyCar::control(Position pos) {
         prev_pos.x = pos.x;
         prev_pos.y = pos.y;
     }
-    twatch->powerOff();
 }
