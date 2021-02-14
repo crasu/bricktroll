@@ -4,7 +4,6 @@
 #include "Lpf2Hub.h"
 #include "Lpf2HubConst.h"
 
-
 class RcModel {
     private:
         RcModel();
@@ -14,13 +13,13 @@ class RcModel {
         Lpf2Hub& hub;
         bool isCalibrated = false;
         bool isInitialized = false;
-        void initalizeCallback();
+        void initalizeCallback(byte port);
+        void calibrate(byte port);
 
     public:
         virtual void connect();
         virtual void control(Position pos);
         virtual void calibrate();
-
 };
 
 class RallyCar: public RcModel {
@@ -28,7 +27,6 @@ class RallyCar: public RcModel {
         RallyCar();
     public:
         RallyCar(Lpf2Hub& hub): RcModel(hub) {};
-        void connect();
         void control(Position pos);
         void calibrate();
 };

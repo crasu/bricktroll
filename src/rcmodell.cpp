@@ -29,16 +29,16 @@ void tachoMotorCallback(void *hub, byte portNumber, DeviceType deviceType, uint8
   }
 }
 
-void RcModel::initalizeCallback() {
+void RcModel::initalizeCallback(byte port) {
     if (!isInitialized) {
         Serial.println("Callback initialized");
-        hub.activatePortDevice(portB, tachoMotorCallback);
+        hub.activatePortDevice(port, tachoMotorCallback);
         delay(200);
         isInitialized = true;
     }
 }
 
-void RallyCar::connect() {
+void RcModel::connect() {
     if (!hub.isConnected() && !hub.isConnecting()) {
         hub.init(); 
     }
@@ -46,7 +46,6 @@ void RallyCar::connect() {
         hub.connectHub();
         if (hub.isConnected()) {
             show_full_screen_message("Connected to HUB");
-            initalizeCallback();
         } else {
             show_full_screen_message("Failed to connected to HUB");
         }
@@ -58,8 +57,10 @@ void RallyCar::connect() {
     }
 }
 
-void RallyCar::calibrate() {
+void RcModel::calibrate(byte port) {
     if (hub.isConnected() && !isCalibrated) {
+        initalizeCallback(port);
+
         show_full_screen_message("Calibrating ");  
         
         hub.setAbsoluteMotorEncoderPosition(portB, 0);       
@@ -87,6 +88,11 @@ void RallyCar::calibrate() {
         isCalibrated = true;
     }
 
+}
+
+void RallyCar::calibrate() 
+{
+    RcModel::calibrate(portB);
 }
 
 void RallyCar::control(Position pos) {
