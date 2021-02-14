@@ -37,6 +37,7 @@ Position read_joystick()
     return pos;
 }
 
+
 bool Position::operator==(Position& o) {
    return x == o.x && y == o.y;
 }
@@ -44,3 +45,20 @@ bool Position::operator==(Position& o) {
 bool Position::operator!=(Position& o) {
    return !(*this == o);
 }
+
+
+Keys read_keys()
+{
+    Keys keys;
+
+    keys.a = digitalRead(HW_CONTROLLER_GPIO_A);
+    keys.b = digitalRead(HW_CONTROLLER_GPIO_B);
+
+    return keys;
+}
+
+boolean Keys::pressed()
+{
+    return this->a && this->b;
+}
+

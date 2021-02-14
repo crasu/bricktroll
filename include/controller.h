@@ -8,5 +8,12 @@ struct Position {
     bool operator!=(Position& o);
 };
 
+struct Keys {
+    boolean a;
+    boolean b;
+    bool pressed();
+};
+
 void controller_init();
 Position read_joystick();
+Keys read_keys();

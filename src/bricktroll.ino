@@ -11,6 +11,22 @@ TTGOClass *watch;
 RcModel* model;
 Lpf2Hub legoHub;
 
+void menu()
+{
+    show_full_screen_message("Press Button:\na) Monster Truck\nb) Rally Car");
+
+    Keys keys = {false, false};
+
+    do {
+        keys = read_keys();    
+    } while(!keys.pressed());
+    
+    if(keys.a)
+        model = new MonsterTruck(legoHub);
+    else
+        model = new RallyCar(legoHub);
+}
+
 void setup()
 {
     Serial.begin(115200);
@@ -30,8 +46,7 @@ void setup()
 
     show_full_screen_message("Connecting ");
 
-    model = new MonsterTruck(legoHub);
-    //model = new RallyCar(legoHub);
+    menu();
 }
 
 void auto_shutdown()
