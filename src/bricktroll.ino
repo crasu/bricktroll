@@ -8,9 +8,7 @@
 #include "tft.h"
 
 TTGOClass *watch;
-
 RcModel* model;
-
 Lpf2Hub legoHub;
 
 void setup()
@@ -22,14 +20,12 @@ void setup()
     watch->begin();
     watch->openBL();
 
-    tft = watch->tft;
-
     esp_wifi_deinit();
 
     TaskHandle_t idle_0 = xTaskGetIdleTaskHandleForCPU(0);
     esp_task_wdt_delete(idle_0);
 
-    tft_init();
+    tft_init(watch);
     controller_init();
 
     show_full_screen_message("Connecting ");
@@ -43,10 +39,10 @@ void auto_shutdown()
     if (legoHub.isConnected()) {
         counter = 0;
     } else {
-        if (counter > 60) {
+        if (counter > 100) {
             show_full_screen_message("Shutting down");
+            watch->shutdown();
             delay(500);
-            delay(20);
         }
         counter++;
     }

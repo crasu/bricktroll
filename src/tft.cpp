@@ -3,8 +3,9 @@
 TFT_eSPI *tft;
 int16_t bg_color;
 
-void tft_init()
+void tft_init(TTGOClass *watch)
 {
+    tft = watch->tft;
     bg_color = tft->color565(0, 0, 0);
     tft->setTextSize(2);
     tft->fillScreen(bg_color);
