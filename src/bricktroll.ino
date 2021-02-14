@@ -30,7 +30,8 @@ void setup()
 
     show_full_screen_message("Connecting ");
 
-    model = new RallyCar(legoHub);
+    model = new MonsterTruck(legoHub);
+    //model = new RallyCar(legoHub);
 }
 
 void auto_shutdown()

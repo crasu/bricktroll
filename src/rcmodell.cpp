@@ -1,7 +1,9 @@
 #include "rcmodel.h"
 #include "tft.h"
 
+byte portA = (byte)ControlPlusHubPort::A;
 byte portB = (byte)ControlPlusHubPort::B;
+byte portC = (byte)ControlPlusHubPort::C;
 byte portD = (byte)ControlPlusHubPort::D;
 
 static int steering_pos;
@@ -16,17 +18,14 @@ int getSteeringPos() {
 
 void tachoMotorCallback(void *hub, byte portNumber, DeviceType deviceType, uint8_t *pData)
 {
-  Lpf2Hub *myHub = (Lpf2Hub *)hub;
+    Lpf2Hub *myHub = (Lpf2Hub *)hub;
 
-  Serial.print("cb port: ");
-  Serial.println(portNumber, DEC);
-  if (portNumber == 1)
-  {
+    Serial.print("cb port: ");
+    Serial.println(portNumber, DEC);
     int rotation = myHub->parseTachoMotor(pData);
     Serial.print("Rotation: ");
     Serial.print(rotation, DEC);
     setSteeringPos(rotation); 
-  }
 }
 
 void RcModel::initalizeCallback(byte port) {
@@ -63,23 +62,23 @@ void RcModel::calibrate(byte port) {
 
         show_full_screen_message("Calibrating ");  
         
-        hub.setAbsoluteMotorEncoderPosition(portB, 0);       
-        hub.setTachoMotorSpeedForDegrees(portB, 100, 180);
+        hub.setAbsoluteMotorEncoderPosition(port, 0);       
+        hub.setTachoMotorSpeedForDegrees(port, 100, 180);
         show_string(".");
         delay(2000);
         int min_pos = getSteeringPos();
 
-        hub.setTachoMotorSpeedForDegrees(portB, -100, 180);
+        hub.setTachoMotorSpeedForDegrees(port, -100, 180);
         show_string(".");
         delay(2000);
         int max_pos = getSteeringPos();
 
         Serial.print("Min: " + String(min_pos) + " Max: " + String(max_pos));
-        hub.setAbsoluteMotorPosition(portB, 100, (min_pos + max_pos)/2);
+        hub.setAbsoluteMotorPosition(port, 100, (min_pos + max_pos)/2);
         show_string(".");
         delay(2000);
 
-        hub.setAbsoluteMotorEncoderPosition(portB, 0);
+        hub.setAbsoluteMotorEncoderPosition(port, 0);
         show_string(".");
         delay(500);
         show_string(".");
@@ -102,6 +101,27 @@ void RallyCar::control(Position pos) {
         if (prev_pos != pos) {
             hub.setBasicMotorSpeed(portD, pos.x);
             hub.setAbsoluteMotorPosition(portB, 50, -pos.y);
+            show_full_screen_message(String(pos.x) + " " + String(pos.y));
+        }
+
+        prev_pos.x = pos.x;
+        prev_pos.y = pos.y;
+    }
+}
+
+void MonsterTruck::calibrate() 
+{
+    RcModel::calibrate(portC);
+}
+
+void MonsterTruck::control(Position pos) {
+    static Position prev_pos;
+
+    if (hub.isConnected()) {
+        if (prev_pos != pos) {
+            hub.setBasicMotorSpeed(portA, -pos.x);
+            hub.setBasicMotorSpeed(portB, -pos.x);
+            hub.setAbsoluteMotorPosition(portC, 100, -pos.y);
             show_full_screen_message(String(pos.x) + " " + String(pos.y));
         }
 

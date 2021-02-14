@@ -30,3 +30,12 @@ class RallyCar: public RcModel {
         void control(Position pos);
         void calibrate();
 };
+
+class MonsterTruck: public RcModel {
+    private:
+        MonsterTruck();
+    public:
+        MonsterTruck(Lpf2Hub& hub): RcModel(hub) {};
+        void control(Position pos);
+        void calibrate();
+};
