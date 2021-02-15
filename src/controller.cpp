@@ -51,14 +51,14 @@ Keys read_keys()
 {
     Keys keys;
 
-    keys.a = digitalRead(HW_CONTROLLER_GPIO_A);
-    keys.b = digitalRead(HW_CONTROLLER_GPIO_B);
+    keys.a = digitalRead(HW_CONTROLLER_GPIO_A) == 0;
+    keys.b = digitalRead(HW_CONTROLLER_GPIO_B) == 0;
 
     return keys;
 }
 
 boolean Keys::pressed()
 {
-    return this->a && this->b;
+    return this->a || this->b;
 }
 

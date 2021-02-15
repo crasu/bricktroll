@@ -13,7 +13,7 @@ Lpf2Hub legoHub;
 
 void menu()
 {
-    show_full_screen_message("Press Button:\na) Monster Truck\nb) Rally Car");
+    show_full_screen_message("Select Model:\na) Monster Truck\nb) Rally Car");
 
     Keys keys = {false, false};
 
